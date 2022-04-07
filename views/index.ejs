@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <header class="head_nav">
+        <h1 class="header_txt"><strong>Welcome!</strong>
+            <%=user.nickname%>.
+        </h1>
+        <img src="<%=user.picture%>" alt="">
+    </header>
+    <style>
+        .task_container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            border-bottom: solid 1px rgba(128, 128, 128, 0.205);
+            /* padding: 5px; */
+
+        }
+
+        img {
+            border: dashed 2px #9ac2ff;
+
+        }
+
+        .task_tab_list {
+            display: flex;
+            width: 90%;
+            justify-content: space-between;
+            border-bottom: solid 1px rgba(128, 128, 128, 0.205);
+            padding: 5px;
+            align-items: center;
+        }
+
+        .task_container button {
+            height: 30px;
+            outline: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            color: #0b5ed7;
+        }
+
+        .task_container button:hover {
+            background: none;
+        }
+
+        .task_container button:hover>.bi-pencil-square {
+            color: #144fa7;
+        }
+
+        .task_container p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .bi-trash2-fill {
+            color: #e15963;
+        }
+
+        .task_container button:hover>.bi-trash2-fill {
+            color: #b42a33;
+        }
+
+        .more_title {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .more_btn:hover>.bi-chevron-double-down {
+            color: #07429b;
+        }
+
+        .btn-check:focus+.btn-primary,
+        .btn-primary:focus {
+            color: unset;
+            border-color: none;
+            box-shadow: none;
+        }
+
+        .action_btns {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .action_btns button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            padding: 2px 5px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .searchBox span {
+            background-color: white;
+        }
+
+        .searchBox {
+            margin-bottom: 10px;
+        }
+
+        .searchBoxDiv {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .noTask {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+    <main>
+        <div id="Taskdata">
+            <p class="" style="text-indent:20px; color:auto">Recent Tasks</p>
+            <% if(task.length<1){%>
+                <div class="noTask">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Opps...</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Task Is Empty</h5>
+                            <p class="card-text">Click the plus Icon to add a Task</p>
+                        </div>
+                    </div>
+                </div>
+
+                <%}else{%>
+                    <div class="searchBoxDiv">
+                        <div class="input-group flex-nowrap searchBox" style="max-width: 320px;">
+                            <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Get a new Car..."
+                                aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
+                    <%}%>
+                        <% for (let i=0; i < task.length; i++) {%>
+                            <%const taskRef=task[i];%>
+                                <form method="post" action="/edit/<%=taskRef.taskId%>" id="Taskdata"
+                                    class="task_container">
+                                    <div class="task_tab_list">
+                                        <div class="more_title">
+                                            <p>
+                                                <button class="more_btn" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#ref<%=taskRef.taskId%>" aria-expanded="false"
+                                                    aria-controls="ref<%=taskRef.taskId%>">
+                                                    <i class="bi bi-chevron-double-down"></i>
+                                                </button>
+                                            </p>
+                                            <p>
+                                                <%=taskRef.task_title%>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="ref<%=taskRef.taskId%>">
+                                        <div class="input-group mb-3" style="margin-top: 10px;">
+                                            <span class="input-group-text" id="basic-addon1">Time</span>
+                                            <input name="time" type="text" class="form-control"
+                                                value="<%=taskRef.task_time%>" aria-label="Username"
+                                                aria-describedby="basic-addon1">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" id="basic-addon1">Date</span>
+                                            <input type="text" name="date" class="form-control"
+                                                value="<%=taskRef.task_date%>" aria-label="Username"
+                                                aria-describedby="basic-addon1">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="summary-text" class="col-form-label">Summary:</label>
+                                            <textarea class="form-control add_task_summary" id="add_summary-text"
+                                                name="summary"><%=taskRef.task_summary%></textarea>
+                                        </div>
+                                        <div class="action_btns">
+                                            <button type="submit" class="edit_btn" data-bs-toggle="modal"
+                                                data-bs-target="#editModal" data-bs-whatever="@mdo">
+                                                <i class="bi bi-save"></i>
+                                            </button>
+                                            <button
+                                                onclick="window.open('whatsapp://send?text=Have a look at my task for today: title:<%=taskRef.task_title%>; date&time:<%=taskRef.task_date%>, <%=taskRef.task_time%>; task Details: <%=taskRef.task_summary%>')"
+                                                type="button" class="shareButton" data-bs-toggle="modal"
+                                                data-bs-target="" data-bs-whatever="@mdo">
+                                                <i class="bi bi-share-fill"></i>
+                                            </button>
+                                            <button type="button" id="delBtn" class="deleteBtn"
+                                                data-doc="<%=taskRef.taskId%>" data-bs-whatever="@mdo">
+                                                <i class="bi bi-trash2-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <%}%>
+        </div>
+    </main>
+    <%-include('./partials/bottom.ejs')%>
+
+
+        <script>
+
+
+            // delete
+            const delBtn = document.getElementById('delBtn');
+            console.log(delBtn.dataset)
+            const endPoint = `/delete/${delBtn.dataset.doc}`;
+            delBtn.addEventListener('click', (e) => {
+                // function deleteFunc(e) {
+                if (confirm("Proceed to Deleting task?")) {
+                    e.preventDefault();
+                    fetch(endPoint, {
+                        method: 'DELETE'
+                    }).then(response => response.json())
+                        .then(data => {
+                            if (data.delete == "successfull") {
+                                window.location.reload();
+                            } else {
+                                alert('An Error Occured')
+                            }
+                            console.log('Success:', data);
+                        })
+                        .catch(err => console.log(err));
+                } else {
+                    console.log('Dont delete')
+                }
+                // }
+            })
+
+            const editBtn = document.querySelector('#editBtn');
+            editBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const task_title = document.querySelector('.task-title').value;
+                const taskId = document.querySelector('#taskId').value;
+                const task_date = document.querySelector('.task_date').value;
+                const task_time = document.querySelector('.task_time').value;
+                const task_summary = document.querySelector('.task_summary').value;
+                const data = { task_title, task_date, task_date, task_summary, taskId };
+
+                try {
+                    fetch('/editMethod', {
+                        method: 'POST', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+
+                } catch (error) {
+                    console.log(error)
+                }
+            })
+        </script>
+
+</body>
+
+</html>
