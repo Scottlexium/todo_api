@@ -35,10 +35,10 @@ const PORT = process.env.PORT||3000;
 const config = {
     authRequired: false,
     auth0Logout: true,
-    secret: 'cmwiomnionownccionwcwcnmwcwcmwc',
-    baseURL: 'http://localhost:3000',
-    clientID: '9T8OEoVBbLFPdbLXcMgEXkqRPjUFpcCV',
-    issuerBaseURL: 'https://dev-7pl535xp.us.auth0.com'
+    secret: process.env.SECRET||'cmwiomnionownccionwcwcnmwcwcmwc',
+    baseURL: process.env.BASEURL||'http://localhost:3000',
+    clientID: process.env.CLIENTID||'9T8OEoVBbLFPdbLXcMgEXkqRPjUFpcCV',
+    issuerBaseURL: process.env.ISSUERBASEURL||'https://dev-7pl535xp.us.auth0.com'
 };
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
