@@ -134,8 +134,17 @@
             justify-content: center;
             margin-top: 20px;
         }
+        .myCollapse{
+            width: 500px;            
+        }
+        @media only screen and (max-width: 600px) {
+            .myCollapse{
+                width: 90%;
+            }
+}
+       
     </style>
-    <main>
+    <main style="margin-bottom: 100px;">
         <div id="Taskdata">
             <p class="" style="text-indent:20px; color:auto">Recent Tasks</p>
             <% if(task.length<1){%>
@@ -176,7 +185,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="collapse" id="ref<%=taskRef.taskId%>">
+                                    <div class="collapse myCollapse" id="ref<%=taskRef.taskId%>">
                                         <div class="input-group mb-3" style="margin-top: 10px;">
                                             <span class="input-group-text" id="basic-addon1">Time</span>
                                             <input name="time" type="time" class="form-control"
