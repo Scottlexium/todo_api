@@ -28,17 +28,17 @@ app.use(cookieParser());
 app.set('views', 'views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
-const PORT = process.env.PORT||3000;
+const PORT = process.env.PORT || 3000;
 
 
 
 const config = {
     authRequired: false,
     auth0Logout: true,
-    secret: process.env.SECRET||'cmwiomnionownccionwcwcnmwcwcmwc',
-    baseURL: process.env.BASEURL||'http://localhost:3000',
-    clientID: process.env.CLIENTID||'9T8OEoVBbLFPdbLXcMgEXkqRPjUFpcCV',
-    issuerBaseURL: process.env.ISSUERBASEURL||'https://dev-7pl535xp.us.auth0.com'
+    secret: process.env.SECRET || 'cmwiomnionownccionwcwcnmwcwcmwc',
+    baseURL: process.env.BASEURL || 'http://localhost:3000',
+    clientID: process.env.CLIENTID || '9T8OEoVBbLFPdbLXcMgEXkqRPjUFpcCV',
+    issuerBaseURL: process.env.ISSUERBASEURL || 'https://dev-7pl535xp.us.auth0.com'
 };
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
@@ -134,9 +134,17 @@ app.post('/addTask', tokenCb, async (req, res) => {
         task_date: req.body.add_task_date,
         task_summary: req.body.add_task_summary,
     });
-    const dataRef = await db.collection('users').doc(globalToken.id).collection('tasks').add(addTask);
-    console.log(dataRef.id);
-    res.status(200).json({ message: 'successfull' })
+    const noteLimit = 10;
+    const checkTask = await db.collection('users').doc(globalToken.id).collection('tasks').get();;
+    if (checkTask._size == noteLimit) {
+        res.status(200).json({ limit: true})
+    } else {
+        const dataRef = await db.collection('users').doc(globalToken.id).collection('tasks').add(addTask);
+        console.log(dataRef.id);
+        res.status(200).json({ saved: true })
+    }
+    console.log('current tasks =>', checkTask._size)
+
 })
 app.post('/edit/:id', tokenCb, async (req, res) => {
     console.log('body => ', req.body);
@@ -177,6 +185,6 @@ app.delete('/delete/:id', tokenCb, async (req, res) => {
     const tRef = await db.collection('users').doc(globalToken.id)
         .collection('tasks').doc(taskId).delete();
     console.log('deleting'.tRef)
-    res.status(200).json({delete:'successfull'})
+    res.status(200).json({ delete: 'successfull' })
 })
 // addTask

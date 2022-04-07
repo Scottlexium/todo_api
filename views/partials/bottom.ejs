@@ -219,7 +219,13 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    data.message == 'successfull'? location.reload() : alert('An Error Occured')
+                    if (data.limit) {
+                        alert('Maximum Number of Notes (10) reached')
+                    }
+                    else if(data.saved){
+                        location.reload();
+                    }
+
                     console.log('Success:', data);
                 })
                 .catch((error) => {
