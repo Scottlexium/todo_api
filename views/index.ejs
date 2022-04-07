@@ -153,7 +153,7 @@
                     <div class="searchBoxDiv">
                         <div class="input-group flex-nowrap searchBox" style="max-width: 320px;">
                             <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Get a new Car..."
+                            <input id="searchFilter" type="text" class="form-control" placeholder="Get a new Car..."
                                 aria-describedby="addon-wrapping">
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                             <%const taskRef=task[i];%>
                                 <form method="post" action="/edit/<%=taskRef.taskId%>" id="Taskdata"
                                     class="task_container">
-                                    <div class="task_tab_list">
+                                    <div class="task_tab_list" id="myTaskList">
                                         <div class="more_title">
                                             <p>
                                                 <button class="more_btn" type="button" data-bs-toggle="collapse"
@@ -179,13 +179,13 @@
                                     <div class="collapse" id="ref<%=taskRef.taskId%>">
                                         <div class="input-group mb-3" style="margin-top: 10px;">
                                             <span class="input-group-text" id="basic-addon1">Time</span>
-                                            <input name="time" type="text" class="form-control"
+                                            <input name="time" type="time" class="form-control"
                                                 value="<%=taskRef.task_time%>" aria-label="Username"
                                                 aria-describedby="basic-addon1">
                                         </div>
                                         <div class="input-group mb-3">
                                             <span class="input-group-text" id="basic-addon1">Date</span>
-                                            <input type="text" name="date" class="form-control"
+                                            <input type="date" name="date" class="form-control"
                                                 value="<%=taskRef.task_date%>" aria-label="Username"
                                                 aria-describedby="basic-addon1">
                                         </div>
@@ -218,9 +218,18 @@
     <%-include('./partials/bottom.ejs')%>
 
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          $("#searchFilter").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTaskList p").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+        </script>
         <script>
-
-
             // delete
             const delBtn = document.getElementById('delBtn');
             console.log(delBtn.dataset)

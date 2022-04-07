@@ -68,9 +68,9 @@ const tokenCb = function (req, res, next) {
 app.get('/', (req, res) => {
     res.redirect(req.oidc.isAuthenticated() ? '/home' : '/login');
 });
-app.get('/logout', (req, res) => {
-    res.redirect('/logout')
-})
+// app.get('/logout', (req, res) => {
+//     res.redirect('/logout')
+// })
 app.get('/home', tokenCb, async (req, res) => {
     const userRef = req.oidc.idTokenClaims;
     const data = {
