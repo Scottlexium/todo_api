@@ -12,6 +12,7 @@ const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestor
 const serviceAccount = require('./todo-service.json');
 const { v4: uuidv4 } = require('uuid');
 const randomeID = uuidv4();
+dotenv.config();
 const methodOverride = require('method-override');
 // app.use(methodOverride('_method'))
 
@@ -27,7 +28,7 @@ app.use(cookieParser());
 app.set('views', 'views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
-const PORT = 3000;
+const PORT = process.env.PORT||3000;
 
 
 
